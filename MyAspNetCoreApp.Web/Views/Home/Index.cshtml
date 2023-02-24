@@ -1,0 +1,80 @@
+﻿@{
+    ViewData["Title"] = "Anasayfa";
+}
+
+@section Css
+{
+    @*<link rel="stylesheet" href="~/css/example.css" asp-append-version="true" />
+    <style>
+        h1{
+            color:red;
+            background-color:aquamarine;
+        }
+    </style>*@
+}
+
+
+@section Scripts
+{
+    @*<script type="text/javascript">
+    //alert("Hoşgeldiniz")    
+    
+    $(document).ready(function(){
+        console.log("Sayfaya hoşgeldin")
+    })
+       
+    </script>*@
+}
+@*<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+</div>
+
+<h1>MERHABA DÜNYA</h1>
+<hr />
+<h2>Merhaba Mustafa</h2>
+
+// HTML CSS JAVASCRİPT
+<div>
+    @DateTime.Now.ToShortDateString()
+</div>
+
+@{
+    var datetime = DateTime.Now.ToLongDateString();
+    var message = "Merhaba";
+    @: bugünün tarihi: @datetime
+    <div>@message</div>
+    <text>Bugünün Tarihi: @datetime</text>
+}
+
+@if(1==1){
+    <p>Doğru</p>
+}
+else if(DateTime.IsLeapYear(DateTime.Now.Year)){
+    <p>Artık Yıl:</p>
+}
+else{
+    <p>Yanlış</p>
+}
+
+@for (var i =0; i<10; i++){
+    <p>@i</p>
+}
+
+@foreach (var item in Enumerable.Range(1,20).ToList()){
+    <p>@item</p>
+}*@
+
+<div class="row">
+    <div class="col-md-4">
+        <partial name="~/PartialViews/_ProductListPartialView.cshtml" model="@ViewBag.productListPartialViewModel" />
+    </div>
+    <div class="col-md-4">
+        @*1.yol*@
+        @*@await Component.InvokeAsync("ProductList",new {type=1})*@
+
+        @*2.yol*@
+        <vc:product-list type=1></vc:product-list>
+    </div>
+</div>
+

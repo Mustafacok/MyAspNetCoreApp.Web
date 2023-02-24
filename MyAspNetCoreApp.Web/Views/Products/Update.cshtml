@@ -1,0 +1,86 @@
+﻿@{
+    ViewData["Title"] = "Update";
+}
+
+@model ProductViewModel
+
+<h1>Ürün Güncelleme</h1>
+<form asp-controller="Products" asp-action="Update" method="post">
+    <input type="hidden" asp-for="Id" />
+    <div class="mb-3">
+        <label asp-for="Name" class="form-label">Ürün İsmi:</label>
+        @*<input type="text" />*@
+        <input class="form-control" asp-for="Name">
+        <span class="text-danger" asp-validation-for="Name"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Price" class="form-label">Ürün Fiyatı:</label>
+        <input class="form-control" asp-for="Price">
+        <span class="text-danger" asp-validation-for="Price"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Stock" class="form-label">Ürün Stoğu:</label>
+        <input class="form-control" asp-for="Stock">
+        <span class="text-danger" asp-validation-for="Stock"></span>
+    </div>
+
+    <div class="mb-3">
+        @*<label asp-for="Color" class="form-label">Ürün Rengi:</label>
+        <input class="form-control" asp-for="Color">*@
+
+        <select class="form-select" asp-for="Color" asp-items="@ViewBag.ColorSelect">
+            <option value="">Renk Seçiniz</option>
+        </select>
+        <span class="text-danger" asp-validation-for="Color"></span>
+    </div>
+
+    <div class="form-check">
+        <input class="form-check-input" asp-for="isPublish">
+        <label class="form-check-label" asp-for="isPublish">
+            Yayınlansın mı ?
+        </label>
+    </div>
+    <div class="mb-3 mt-3">
+        <span>Ürünün Satışta Kalma Süresi :</span>
+        @foreach (var item in ViewBag.Expire as Dictionary<string, int>)
+        {
+            <div class="form-check">
+                @*@if (item.Value == ViewBag.radioExpireValue)
+                {
+                <input checked="checked" class="form-check-input" type="radio" id="@(item.Value)Expire" asp-for="Expire" value="@item.Value">
+                }
+                else{
+                <input class="form-check-input" type="radio" id="@(item.Value)Expire" asp-for="Expire" value="@item.Value">
+                }*@
+
+                <input checked="@(item.Value == ViewBag.ExpireValue ? true : false)" class="form-check-input" type="radio" id="@(item.Value)Expire" asp-for="Expire" value="@item.Value">
+
+                <label class="form-check-label" asp-for="Expire" for="@(item.Value)Expire">
+                    @item.Key
+                </label>
+            </div>
+        }
+        <span class="text-danger" asp-validation-for="Expire"></span>
+    </div>
+
+    <div class="form-floating">
+        <textarea asp-for="Description" class="form-control" placeholder="Ürün Açıklaması"></textarea>
+        <label asp-for="Description">Ürün Açıklaması</label>
+        <span class="text-danger" asp-validation-for="Description"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="PublishDate" class="form-label">Yayın Tarihi:</label>
+        <input class="form-control" asp-for="PublishDate">
+        <span class="text-danger" asp-validation-for="PublishDate"></span>
+    </div>
+
+    <button class="btn btn-primary mt-3" type="submit">Ürün Güncelle</button>
+
+</form>
+
+@section Scripts{
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+
+}

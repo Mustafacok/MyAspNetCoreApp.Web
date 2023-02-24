@@ -1,1 +1,3 @@
 # MyAspNetCoreApp.Web
+
+Turkcell Geleceği Yazanlar Web Sitesinde Fatih Çakıroğlu Hoca ile ASP.NET Core videolu eğitimini içeren deneme tarzında çalışmalarımın olduğu bilgiler içermektedir. Kodlamaya devam...

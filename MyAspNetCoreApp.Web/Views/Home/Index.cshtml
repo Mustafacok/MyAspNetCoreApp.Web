@@ -1,5 +1,7 @@
 ﻿@{
     ViewData["Title"] = "Anasayfa";
+
+    var product = new Product() { Id = 1, Name = "Kalem 1", Price = 199, Stock = 99 };
 }
 
 @section Css
@@ -76,5 +78,20 @@ else{
         @*2.yol*@
         <vc:product-list type=1></vc:product-list>
     </div>
+    <div class="col-md-4">
+        <italic>Asp.Net Core</italic>
+        <product-show product="@product"></product-show>
+
+    </div>
+
+</div>
+<div>
+    <img src="/images/defter.jpg" />
+    <image-thumbnail image-src="/images/defter.jpg"></image-thumbnail>
+    @*<thumbnail></thumbnail>*@
 </div>
 
+@*Tag Helpers*@
+@*@Html.ActionLink("aaa","Index","Products", new{Id=5})
+
+<a asp-controller="Products" asp-action="Index" asp-route-id="5">aaa</a>*@

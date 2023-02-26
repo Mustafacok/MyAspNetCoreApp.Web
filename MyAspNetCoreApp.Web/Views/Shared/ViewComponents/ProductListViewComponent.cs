@@ -4,6 +4,7 @@ using MyAspNetCoreApp.Web.ViewModels;
 
 namespace MyAspNetCoreApp.Web.Views.Shared.ViewComponents
 {
+    //[ViewComponent(Name ="p-list")] // view component ismi değiştirmek için kullanılır
     public class ProductListViewComponent:ViewComponent
     {
         private readonly AppDbContext _context;

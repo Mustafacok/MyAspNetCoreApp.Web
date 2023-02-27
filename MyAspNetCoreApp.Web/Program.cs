@@ -38,6 +38,16 @@ app.UseRouting();
 
 app.UseAuthorization();
 
+//controller/action/id
+//routing tanýmlama
+app.MapControllerRoute(
+    name: "productpages",
+    pattern: "{controller=products}/{action=pages}/{page}/{pageSize}");
+
+app.MapControllerRoute(
+    name: "productgetbyid",
+    pattern: "{controller=products}/{action=getbyid}/{productid}");
+
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");

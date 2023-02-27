@@ -4,7 +4,7 @@
 @model List<ProductViewModel>
 <h1>Ürünler</h1>
 
-<a asp-controller="products" asp-action="add">Ürün Ekle</a>
+<a class="btn btn-primary mb-3" asp-controller="products" asp-action="add">Ürün Ekle</a>
 @if (TempData["status"] != null)
 {
     <div class="alert-sm alert-success" role="alert">@TempData["status"]</div>
@@ -58,8 +58,13 @@
                 </td>
                 <td><a asp-controller="products" asp-action="remove" asp-route-id="@item.Id">Sil</a></td>
                 <td><a asp-controller="products" asp-action="update" asp-route-id="@item.Id">Güncelle</a></td>
+                <td><a asp-controller="products" asp-action="getbyid" asp-route-productid="@item.Id">Ürüne Git</a></td>
+
+
             </tr>
         }
     </tbody>
 
 </table>
+<a asp-controller="products" asp-action="pages" asp-route-page="1" asp-route-pagesize="3">1 sayfadan 3 ürün verilir.</a>
+<a asp-controller="products" asp-action="pages" asp-route-page="2" asp-route-pagesize="3">2 sayfadan 3 ürün verilir.</a>

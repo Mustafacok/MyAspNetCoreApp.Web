@@ -49,13 +49,15 @@ namespace MyAspNetCoreApp.Web.Controllers
 
         public IActionResult Pages(int page,int pageSize)
         {
+            //page=1 pagesize=3 -- ilk 3 kayıt
+            //page=2 pagesize=3 -- ikinci 3 kayıt
+
+            var products =_context.Products.Skip((page-1)*pageSize).Take(pageSize).ToList();
+
             ViewBag.PageSize = pageSize;
             ViewBag.Page = page;
 
-
-
-
-            return View();
+            return View(_mapper.Map<List<ProductViewModel>>(products));
         }
 
 
@@ -159,6 +161,7 @@ namespace MyAspNetCoreApp.Web.Controllers
         public IActionResult Update(int id)
         {
             var product = _context.Products.Find(id);
+
 
             ViewBag.radioExpireValue = product.Expire;
             ViewBag.Expire = new Dictionary<string, int>()

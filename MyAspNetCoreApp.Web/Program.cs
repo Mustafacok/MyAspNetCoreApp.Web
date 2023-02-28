@@ -38,6 +38,18 @@ app.UseRouting();
 
 app.UseAuthorization();
 
+
+app.MapControllerRoute(
+    name: "article",
+    pattern: "{controller=Blog}/{action=Article}/{name}/{id}");
+
+//blog/abc -- blog controller > article action methodu çalýþsýn
+//blog/eee -- blog controller > article action methodu çalýþsýn
+//app.MapControllerRoute(
+//    name: "pages",
+//    pattern: "blog/{*article}/",
+//    defaults:new {controller="Blog",action="Article" });
+
 //controller/action/id
 //routing tanýmlama
 app.MapControllerRoute(

@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using MyAspNetCoreApp.Web.Filters;
 using MyAspNetCoreApp.Web.Helpers;
 using MyAspNetCoreApp.Web.Models;
 using MyAspNetCoreApp.Web.ViewModels;
@@ -68,21 +69,22 @@ namespace MyAspNetCoreApp.Web.Controllers
         //[Route("[controller]/[action]/{productid}")]
         //[Route("[action]/{productid}",Name ="product")]
 
+        //[NotFoundFilter()] // içerisinde parametre almazsa bu şekilde tanımlanır.
+        [ServiceFilter(typeof(NotFoundFilter))] // içerisinde parametre aldığı için bu şekilde tanımlanır.
         [Route("urun/{productid}",Name ="product")]
         public IActionResult GetById(int productid)
         {
             var product = _context.Products.Find(productid);
+            
             return View(_mapper.Map<ProductViewModel>(product));
         }
 
+        [ServiceFilter(typeof(NotFoundFilter))]
         [HttpGet("{id}")]
         public IActionResult Remove(int id)
         {
             var product = _context.Products.Find(id);
-            if (product == null)
-            {
-                return RedirectToAction("Error","Home");
-            }
+            
             _context.Products.Remove(product);
 
             _context.SaveChanges();
@@ -110,6 +112,7 @@ namespace MyAspNetCoreApp.Web.Controllers
 
             return View();
         }
+
         [HttpPost]
         public IActionResult Add(ProductViewModel newProduct)
         {
@@ -167,14 +170,14 @@ namespace MyAspNetCoreApp.Web.Controllers
             }
         }
 
+        [ServiceFilter(typeof(NotFoundFilter))]
         // id leri productid yaptım ilk satırda
         [HttpGet("{id}")]
         public IActionResult Update(int id)
         {
             var product = _context.Products.Find(id);
-
-
-            ViewBag.radioExpireValue = product.Expire;
+            
+            ViewBag.ExpireValue = product.Expire;
             ViewBag.Expire = new Dictionary<string, int>()
             {
                 {"1 Ay",1 },

@@ -7,6 +7,7 @@ using MyAspNetCoreApp.Web.ViewModels;
 
 namespace MyAspNetCoreApp.Web.Controllers
 {
+    [Route("[controller]/[action]")]
     public class ProductsController : Controller
     {
         private AppDbContext _context;
@@ -47,6 +48,8 @@ namespace MyAspNetCoreApp.Web.Controllers
             return View(_mapper.Map<List<ProductViewModel>>(products));
         }
 
+        //[HttpGet("{page}/{pageSize}")]
+        [Route("{page}/{pageSize}",Name ="productpage")]
         public IActionResult Pages(int page,int pageSize)
         {
             //page=1 pagesize=3 -- ilk 3 kayıt
@@ -61,19 +64,21 @@ namespace MyAspNetCoreApp.Web.Controllers
         }
 
 
+        //attribute routing
+        //[Route("[controller]/[action]/{productid}")]
+        //[Route("[action]/{productid}",Name ="product")]
 
-
+        [Route("urun/{productid}",Name ="product")]
         public IActionResult GetById(int productid)
         {
             var product = _context.Products.Find(productid);
             return View(_mapper.Map<ProductViewModel>(product));
         }
 
-
-
-        public IActionResult Remove(int id)
+        [HttpGet("{id}")]
+        public IActionResult Remove(int productid)
         {
-            var product = _context.Products.Find(id);
+            var product = _context.Products.Find(productid);
 
             _context.Products.Remove(product);
             _context.SaveChanges();
@@ -157,10 +162,12 @@ namespace MyAspNetCoreApp.Web.Controllers
                 return View();
             }
         }
-        [HttpGet]
-        public IActionResult Update(int id)
+
+        // id leri productid yaptım ilk satırda
+        [HttpGet("{id}")]
+        public IActionResult Update(int productid)
         {
-            var product = _context.Products.Find(id);
+            var product = _context.Products.Find(productid);
 
 
             ViewBag.radioExpireValue = product.Expire;

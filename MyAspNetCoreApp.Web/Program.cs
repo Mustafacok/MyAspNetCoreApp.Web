@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using MyAspNetCoreApp.Web.Helpers;
 using MyAspNetCoreApp.Web.Models;
@@ -38,10 +39,10 @@ app.UseRouting();
 
 app.UseAuthorization();
 
-
-app.MapControllerRoute(
-    name: "article",
-    pattern: "{controller=Blog}/{action=Article}/{name}/{id}");
+        //Conventional Routing <------------
+//app.MapControllerRoute(
+//    name: "article",
+//    pattern: "{controller=Blog}/{action=Article}/{name}/{id}");
 
 //blog/abc -- blog controller > article action methodu çalýþsýn
 //blog/eee -- blog controller > article action methodu çalýþsýn
@@ -52,20 +53,25 @@ app.MapControllerRoute(
 
 //controller/action/id
 //routing tanýmlama
-app.MapControllerRoute(
-    name: "pages",
-    pattern: "{controller}/{action}/{page}/{pageSize}");
+//app.MapControllerRoute(
+//    name: "pages",
+//    pattern: "{controller}/{action}/{page}/{pageSize}");
 
-app.MapControllerRoute(
-    name: "getbyid",
-    pattern: "{controller}/{action}/{productid}");
+//app.MapControllerRoute(
+//    name: "getbyid",
+//    pattern: "{controller}/{action}/{productid}");
 
 //app.MapControllerRoute(
 //    name: "productgetbyid",
 //    pattern: "{controller=products}/{action=getbyid}/{productid}");
+// -------------->
 
-app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+app.MapControllers();
+
+
+
+//app.MapControllerRoute(
+//    name: "default",
+//    pattern: "{controller=home}/{action=ýndex}/{id?}");
 
 app.Run();

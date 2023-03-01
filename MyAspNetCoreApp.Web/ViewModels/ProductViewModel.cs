@@ -21,7 +21,7 @@ namespace MyAspNetCoreApp.Web.ViewModels
         [Range(1,9999, ErrorMessage = "Stok Alanı 1-9999 Arasında Olmalıdır")]
         public int? Stock { get; set; }
 
-        [StringLength(50,MinimumLength =50, ErrorMessage = "Açıklama Alanına 50-300 karakter arasında olabilir.")]
+        [StringLength(50,MinimumLength =50, ErrorMessage = "Açıklama Alanı 50-300 karakter arasında olabilir.")]
         [Required(ErrorMessage = "Açıklama Alanı Boş Geçilmez")]
         public string? Description { get; set; }
 

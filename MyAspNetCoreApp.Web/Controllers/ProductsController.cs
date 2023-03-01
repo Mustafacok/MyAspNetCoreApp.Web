@@ -76,11 +76,15 @@ namespace MyAspNetCoreApp.Web.Controllers
         }
 
         [HttpGet("{id}")]
-        public IActionResult Remove(int productid)
+        public IActionResult Remove(int id)
         {
-            var product = _context.Products.Find(productid);
-
+            var product = _context.Products.Find(id);
+            if (product == null)
+            {
+                return RedirectToAction("Error","Home");
+            }
             _context.Products.Remove(product);
+
             _context.SaveChanges();
             return RedirectToAction("Index");
         }
@@ -144,7 +148,7 @@ namespace MyAspNetCoreApp.Web.Controllers
             {
                 try
                 {
-                    throw new Exception("db hatası");  
+                    //throw new Exception("db hatası");  
                     _context.Products.Add(_mapper.Map<Product>(newProduct));
                     _context.SaveChanges();
 
@@ -165,9 +169,9 @@ namespace MyAspNetCoreApp.Web.Controllers
 
         // id leri productid yaptım ilk satırda
         [HttpGet("{id}")]
-        public IActionResult Update(int productid)
+        public IActionResult Update(int id)
         {
-            var product = _context.Products.Find(productid);
+            var product = _context.Products.Find(id);
 
 
             ViewBag.radioExpireValue = product.Expire;

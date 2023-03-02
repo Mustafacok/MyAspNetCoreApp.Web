@@ -36,6 +36,8 @@ namespace MyAspNetCoreApp.Web.Controllers
             //    _context.SaveChanges();
             //}
         }
+
+        [CacheResourceFilter]
         public IActionResult Index() /*[FromServices]IHelper helper2*/
         {
             //var text = "Asp.Net";

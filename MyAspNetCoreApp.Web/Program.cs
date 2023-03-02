@@ -23,7 +23,7 @@ builder.Services.AddTransient<IHelper, Helper>();
 
 builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly()); //1.adým automapper
 
-builder.Services.AddScoped<NotFoundFilter>();
+builder.Services.AddScoped<NotFoundFilter>(); //NotFoundFilter için gerekli.
 
 var app = builder.Build();
 

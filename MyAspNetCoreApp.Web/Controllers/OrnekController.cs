@@ -1,14 +1,17 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using MyAspNetCoreApp.Web.Filters;
 using System.Security.Cryptography.Xml;
 
 namespace MyAspNetCoreApp.Web.Controllers
 {
+    
     public class Product2
     {
         public int Id { get; set; }
         public string? Name { get; set; }
     }
-
+    [CustomResultFilter("x-version","2.0")]
+    [Route("[controller]/[action]")]
     public class OrnekController : Controller
     {
         public IActionResult Index()

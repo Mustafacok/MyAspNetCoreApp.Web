@@ -40,7 +40,8 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
-app.UseAuthorization();
+//app.UseAuthentication(); //kimlik doðrulama
+app.UseAuthorization(); //kimlik yetkilendirme
 
         //Conventional Routing <------------
 //app.MapControllerRoute(
@@ -70,8 +71,6 @@ app.UseAuthorization();
 // -------------->
 
 app.MapControllers();
-
-
 
 //app.MapControllerRoute(
 //    name: "default",

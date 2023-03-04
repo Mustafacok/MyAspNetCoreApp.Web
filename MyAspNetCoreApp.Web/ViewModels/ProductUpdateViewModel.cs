@@ -4,11 +4,11 @@ using System.ComponentModel.DataAnnotations;
 
 namespace MyAspNetCoreApp.Web.ViewModels
 {
-    public class ProductViewModel
+    public class ProductUpdateViewModel
     {
         public int Id { get; set; }
 
-        [Remote(action:"HasProductName",controller:"Products")]
+        //[Remote(action:"HasProductName",controller:"Products")]
         [StringLength(50,ErrorMessage ="İsim Alanına en fazla 50 karakter girilebilir.")]
         [Required(ErrorMessage ="İsim Alanı Boş Geçilmez")]
         public string? Name { get; set; }

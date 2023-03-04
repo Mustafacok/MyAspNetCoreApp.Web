@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Extensions.FileProviders;
 using MyAspNetCoreApp.Web.Filters;
 using MyAspNetCoreApp.Web.Helpers;
 using MyAspNetCoreApp.Web.Models;
@@ -14,15 +15,16 @@ namespace MyAspNetCoreApp.Web.Controllers
         private AppDbContext _context;
         private readonly IMapper _mapper;
         //private IHelper _helper;
-
+        private readonly IFileProvider _fileProvider;
         private readonly ProductRepository _productRepository;
-        public ProductsController(AppDbContext context, IMapper mapper) /* IHelper helper*/
+        public ProductsController(AppDbContext context, IMapper mapper, IFileProvider fileProvider) /* IHelper helper*/
         {
             //DI Container
             //Dependency Injection Pattern
             _productRepository = new ProductRepository();
             _context = context;
             _mapper = mapper;
+            _fileProvider = fileProvider;
             //_helper = helper;   
 
             //Linq
@@ -37,7 +39,7 @@ namespace MyAspNetCoreApp.Web.Controllers
             //}
         }
 
-        [CacheResourceFilter]
+        //[CacheResourceFilter]
         public IActionResult Index() /*[FromServices]IHelper helper2*/
         {
             //var text = "Asp.Net";
@@ -52,13 +54,13 @@ namespace MyAspNetCoreApp.Web.Controllers
         }
 
         //[HttpGet("{page}/{pageSize}")]
-        [Route("{page}/{pageSize}",Name ="productpage")]
-        public IActionResult Pages(int page,int pageSize)
+        [Route("{page}/{pageSize}", Name = "productpage")]
+        public IActionResult Pages(int page, int pageSize)
         {
             //page=1 pagesize=3 -- ilk 3 kayıt
             //page=2 pagesize=3 -- ikinci 3 kayıt
 
-            var products =_context.Products.Skip((page-1)*pageSize).Take(pageSize).ToList();
+            var products = _context.Products.Skip((page - 1) * pageSize).Take(pageSize).ToList();
 
             ViewBag.PageSize = pageSize;
             ViewBag.Page = page;
@@ -73,11 +75,11 @@ namespace MyAspNetCoreApp.Web.Controllers
 
         //[NotFoundFilter()] // içerisinde parametre almazsa bu şekilde tanımlanır.
         [ServiceFilter(typeof(NotFoundFilter))] // içerisinde parametre aldığı için bu şekilde tanımlanır.
-        [Route("urun/{productid}",Name ="product")]
+        [Route("urun/{productid}", Name = "product")]
         public IActionResult GetById(int productid)
         {
             var product = _context.Products.Find(productid);
-            
+
             return View(_mapper.Map<ProductViewModel>(product));
         }
 
@@ -86,7 +88,7 @@ namespace MyAspNetCoreApp.Web.Controllers
         public IActionResult Remove(int id)
         {
             var product = _context.Products.Find(id);
-            
+
             _context.Products.Remove(product);
 
             _context.SaveChanges();
@@ -134,7 +136,44 @@ namespace MyAspNetCoreApp.Web.Controllers
             //    ModelState.AddModelError(String.Empty, "Ürün ismi A harfi ile başlayamaz.");
             //}
 
+            IActionResult result = null;
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var product = _mapper.Map<Product>(newProduct);
+                    if (newProduct.Image!=null && newProduct.Image.Length>0)
+                    {
+                        var root = _fileProvider.GetDirectoryContents("wwwroot");
+                        var images = root.First(x => x.Name == "images");
 
+
+                        var randomImageName = Guid.NewGuid() + Path.GetExtension(newProduct.Image.FileName);
+
+                        var path = Path.Combine(images.PhysicalPath, randomImageName);
+
+                        using var stream = new FileStream(path, FileMode.Create);
+                        newProduct.Image.CopyTo(stream);
+                                                
+                        product.ImagePath = randomImageName;
+                    }
+
+                    //throw new Exception("db hatası");  
+                    _context.Products.Add(product);
+                    _context.SaveChanges();
+
+                    TempData["status"] = "Ürün Başarıyla Eklendi.";
+                    return RedirectToAction("Index");
+                }
+                catch (Exception)
+                {
+                    result = View();
+                }
+            }
+            else
+            {
+                result = View();
+            }
             ViewBag.Expire = new Dictionary<string, int>()
             {
                 {"1 Ay",1 },
@@ -149,27 +188,7 @@ namespace MyAspNetCoreApp.Web.Controllers
                 new() {Data="Sarı",Value="Sarı" }
             }, "Value", "Data");
 
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    //throw new Exception("db hatası");  
-                    _context.Products.Add(_mapper.Map<Product>(newProduct));
-                    _context.SaveChanges();
-
-                    TempData["status"] = "Ürün Başarıyla Eklendi.";
-                    return RedirectToAction("Index");
-                }
-                catch (Exception)
-                {
-                    ModelState.AddModelError(String.Empty,"Ürün kaydedilirken hata oluştu, daha sonra tekrar deneyiniz.");
-                    return View();  
-                }                
-            }
-            else
-            {                
-                return View();
-            }
+            return result;
         }
 
         [ServiceFilter(typeof(NotFoundFilter))]
@@ -178,7 +197,7 @@ namespace MyAspNetCoreApp.Web.Controllers
         public IActionResult Update(int id)
         {
             var product = _context.Products.Find(id);
-            
+
             ViewBag.ExpireValue = product.Expire;
             ViewBag.Expire = new Dictionary<string, int>()
             {
@@ -194,10 +213,10 @@ namespace MyAspNetCoreApp.Web.Controllers
                 new() {Data="Sarı",Value="Sarı" }
             }, "Value", "Data", product.Color);
 
-            return View(_mapper.Map<ProductViewModel>(product));
+            return View(_mapper.Map<ProductUpdateViewModel>(product));
         }
         [HttpPost]
-        public IActionResult Update(ProductViewModel updateProduct)
+        public IActionResult Update(ProductUpdateViewModel updateProduct)
         {
 
             if (!ModelState.IsValid)
@@ -220,6 +239,22 @@ namespace MyAspNetCoreApp.Web.Controllers
                 return View();
             }
 
+            if (updateProduct.Image != null && updateProduct.Image.Length > 0)
+            {
+                var root = _fileProvider.GetDirectoryContents("wwwroot");
+                var images = root.First(x => x.Name == "images");
+
+
+                var randomImageName = Guid.NewGuid() + Path.GetExtension(updateProduct.Image.FileName);
+
+                var path = Path.Combine(images.PhysicalPath, randomImageName);
+
+                using var stream = new FileStream(path, FileMode.Create);
+                updateProduct.Image.CopyTo(stream);
+
+                updateProduct.ImagePath = randomImageName;
+            }
+
             _context.Products.Update(_mapper.Map<Product>(updateProduct));
             _context.SaveChanges();
 
@@ -227,7 +262,7 @@ namespace MyAspNetCoreApp.Web.Controllers
             return RedirectToAction("Index");
         }
 
-        [AcceptVerbs("GET","POST")]
+        [AcceptVerbs("GET", "POST")]
         public IActionResult HasProductName(string Name)
         {
             var anyProduct = _context.Products.Any(x => x.Name.ToLower() == Name.ToLower());

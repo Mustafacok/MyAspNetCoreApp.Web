@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.FileProviders;
 using MyAspNetCoreApp.Web.Filters;
 using MyAspNetCoreApp.Web.Helpers;
 using MyAspNetCoreApp.Web.Models;
@@ -18,6 +19,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 /*builder.Services.AddSingleton<IHelper, Helper>();*/ //DI container eklenen yer, IHelper ismindeki Interface i implemente eden helper sýnýfýndaki nesneyi üret.
 
 //builder.Services.AddScoped<IHelper, Helper>(); 
+builder.Services.AddSingleton<IFileProvider>(new PhysicalFileProvider(Directory.GetCurrentDirectory()));
 
 builder.Services.AddTransient<IHelper, Helper>();
 

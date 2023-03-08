@@ -7,6 +7,7 @@
 <h1>Ürün Güncelleme</h1>
 <form asp-controller="Products" asp-action="Update" method="post" enctype="multipart/form-data">
     <input type="hidden" asp-for="Id" />
+    <input type="hidden" asp-for="ImagePath" />
     <div>
         <img style="width:100px; height:100px;" src="@(String.IsNullOrEmpty(Model.ImagePath) ? "/images/noimage.jpg" : "/images/"+Model.ImagePath)" />
 

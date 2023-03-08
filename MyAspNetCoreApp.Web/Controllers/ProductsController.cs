@@ -193,7 +193,7 @@ namespace MyAspNetCoreApp.Web.Controllers
 
         [ServiceFilter(typeof(NotFoundFilter))]
         // id leri productid yaptım ilk satırda
-        [HttpGet("{id}")]
+        [HttpGet]
         public IActionResult Update(int id)
         {
             var product = _context.Products.Find(id);

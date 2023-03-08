@@ -16,5 +16,8 @@
         public bool isPublish { get; set; }
         public int Expire { get; set; }
         public string? ImagePath { get; set; }
+
+        public int CategoryId { get; set; }
+        public Category Category { get; set; }
     }
 }

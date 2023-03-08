@@ -23,10 +23,10 @@ namespace MyAspNetCoreApp.Web.ViewModels
         public int? Stock { get; set; }
 
         [StringLength(50,MinimumLength =50, ErrorMessage = "Açıklama Alanı 50-300 karakter arasında olabilir.")]
-        [Required(ErrorMessage = "Açıklama Alanı Boş Geçilmez")]
+        [Required(ErrorMessage = "Açıklama Giriniz.")]
         public string? Description { get; set; }
 
-        [Required(ErrorMessage = "Renk Seçimi Boş Olamaz")]
+        [Required(ErrorMessage = "Renk Seçiniz.")]
         public string? Color { get; set; }
 
         [Required(ErrorMessage = "Yayınlanma Tarihi Boş Olamaz")]
@@ -43,6 +43,10 @@ namespace MyAspNetCoreApp.Web.ViewModels
         public IFormFile? Image { get; set; }
 
         [ValidateNever]
-        public string ImagePath { get; set; }
+        public string? ImagePath { get; set; }
+
+        [Required(ErrorMessage = "Kategori Seçiniz.")]
+        public int CategoryId { get; set; }
+        public string? CategoryName { get; set; }
     }
 }

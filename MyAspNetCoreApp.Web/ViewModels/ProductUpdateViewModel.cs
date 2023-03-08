@@ -7,6 +7,7 @@ namespace MyAspNetCoreApp.Web.ViewModels
     public class ProductUpdateViewModel
     {
         public int Id { get; set; }
+        public int CategoryId { get; set; }
 
         //[Remote(action:"HasProductName",controller:"Products")]
         [StringLength(50,ErrorMessage ="İsim Alanına en fazla 50 karakter girilebilir.")]

@@ -14,13 +14,14 @@
         <tr>
             <th>Id</th>
             <th>Resim</th>
+            <th>Kategori</th>
             <th>İsim</th>
             <th>Fiyat</th>
             <th>Stok</th>
             <th>Renk</th>
             <th>Yayınlansın mı?</th>
             <th>Süre</th>
-            <th>Açıklama</th>
+            <th>Açıklama</th>            
             <th></th>
         </tr>
     </thead>
@@ -39,6 +40,7 @@
                         <img style="width:100px; height:100px;" src="/images/noimage.jpg" />
                     }
                 </td>
+                <td>@item.CategoryName</td>
                 <td>@item.Name</td>
                 <td>@item.Price</td>
                 <td>@item.Stock</td>

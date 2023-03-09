@@ -1,0 +1,64 @@
+﻿@{
+    ViewData["Title"] = "Index";
+}
+@section scripts{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            function loadComments() {
+                $.ajax({
+                    type: "GET",
+                    url: "/VisitorAjax/VisitorCommentList",
+                    success: function (data) {
+                        console.log(data);
+                        $.each(data, function (index, item) {
+                            let comment = `<div class="card mt-3" style="width: 18rem;">
+                                                                        <div class="card-body">
+                                                                            <h5 class="card-title">${item.name}</h5>
+                                                                            <h6 class="card-subtitle mb-2 text-muted">${item.created}</h6>
+                                                                            <p class="card-text">${item.comment}</p>
+                                                                        </div>
+                                                                    </div>`;
+                            $("#comments").append(comment);
+                        })
+                    },
+                    error: function (e) {
+                        console.log(e);
+                    }
+                })
+            }
+            loadComments();
+            $("#btnSave").click(function () {
+
+
+                var name = $("#Name").val();
+                var comment = $("#Comment").val();
+
+                var jsonData = { "name": name, "comment": comment };
+                $.ajax({
+                    type: "POST",
+                    url: "/VisitorAjax/SaveVisitorComment",
+                    data: jsonData,
+                    success: function (data) {
+                        alert("Yorumunuz kaydedildi.");
+                        loadComments();
+                    },
+                    error: function (e) {
+                        console.log(e);
+                    }
+                })
+            })
+        })
+    </script>
+}
+<div id="comments">
+</div>
+<div class="mb-3">
+    <label for="Name" class="form-label">İsim:</label>
+    <input class="form-control" id="Name">
+</div>
+<div class="form-floating">
+    <textarea id="Comment" name="Comment" class="form-control" placeholder="Yorumunuz"></textarea>
+    <label for="Comment">Yorum</label>
+</div>
+
+<button id="btnSave" type="button" class="btn btn-primary mt-3">Yorum Kaydet</button>

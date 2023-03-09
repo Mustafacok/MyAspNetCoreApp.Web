@@ -45,7 +45,7 @@ app.UseRouting();
 //app.UseAuthentication(); //kimlik doðrulama
 app.UseAuthorization(); //kimlik yetkilendirme
 
-        //Conventional Routing <------------
+//Conventional Routing <------------
 //app.MapControllerRoute(
 //    name: "article",
 //    pattern: "{controller=Blog}/{action=Article}/{name}/{id}");
@@ -72,10 +72,10 @@ app.UseAuthorization(); //kimlik yetkilendirme
 //    pattern: "{controller=products}/{action=getbyid}/{productid}");
 // -------------->
 
-app.MapControllers();
+//app.MapControllers();
 
-//app.MapControllerRoute(
-//    name: "default",
-//    pattern: "{controller=home}/{action=index}/{id?}");
+app.MapControllerRoute(
+    name: "default",
+    pattern: "{controller=home}/{action=index}/{id?}");
 
 app.Run();

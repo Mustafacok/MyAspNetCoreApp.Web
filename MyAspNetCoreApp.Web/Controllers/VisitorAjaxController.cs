@@ -36,7 +36,7 @@ namespace MyAspNetCoreApp.Web.Controllers
         [HttpGet]
         public IActionResult VisitorCommentList()
         {
-            var visitors = _context.Visitors.ToList();
+            var visitors = _context.Visitors.OrderByDescending(x=>x.Created).ToList();
             var visitorViewModels = _mapper.Map<List<VisitorViewModel>>(visitors);
 
             return Json(visitorViewModels);
